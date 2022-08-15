@@ -13,7 +13,6 @@ import java.util.Date;
 public class DateColumn extends Column {
 
 	private DateType subType = DateType.DATETIME;
-	private int rawNano;
 
 	public static enum DateType {
 		DATE, TIME, DATETIME
@@ -62,7 +61,6 @@ public class DateColumn extends Column {
 	 * */
 	public DateColumn(final java.sql.Timestamp ts) {
 		this(ts == null ? null : ts.getTime());
-		this.setRawNano(ts == null ? 0 : ts.getNanos());
 		this.setSubType(DateType.DATETIME);
 	}
 
@@ -88,10 +86,8 @@ public class DateColumn extends Column {
 		if (null == this.getRawData()) {
 			return null;
 		}
-		java.sql.Timestamp myts = new java.sql.Timestamp((Long) this.getRawData());
-		myts.setNanos(this.getRawNano());
-		return myts;
-//		return new Date((Long)this.getRawData());
+
+		return new Date((Long)this.getRawData());
 	}
 	
 	@Override
@@ -135,13 +131,5 @@ public class DateColumn extends Column {
 
 	public void setSubType(DateType subType) {
 		this.subType = subType;
-	}
-
-	public int getRawNano(){
-		return rawNano;
-	}
-
-	public void setRawNano(int rawNano){
-		this.rawNano = rawNano;
 	}
 }
